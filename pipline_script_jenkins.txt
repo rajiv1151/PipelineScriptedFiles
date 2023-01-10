@@ -1,0 +1,131 @@
+- Create pipeline job (PipelineJob1)
+- Select declerative pipeline
+Take help from (https://www.jenkins.io/doc/book/pipeline/getting-started/)
+- Select hello world pipeline
+
+pipeline {
+    agent any 
+    stages {
+        stage('Stage 1') {
+            steps {
+                echo 'Hello world!' 
+            }
+        }
+    }
+}
+
+- Build now
+- See console output & Logs
+
+--------------------------
+PipelineJob2
+(Each stage is like a new job)
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building..'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+}
+
+----------------------------
+PipelineJob3
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'date'
+                sh 'pwd'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+}
+
+----------------------------
+PipelineJob4
+
+pipeline {
+    agent any 
+    stages {
+        stage('Stage 1') {
+            steps {
+                sh '''
+                ls
+                date
+                cal 2021
+                '''
+            }
+        }
+    }
+}
+
+------------------------------
+PipelineJob5
+
+pipeline {
+    agent any
+    stages {
+        stage('Example') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+    post { //whether steps it fails or pass it will execute
+        always { 
+            echo 'I will always say Hello again!'
+        }
+    }
+}
+
+# Try modifying like cho 'Hello World' and run.
+-------------------------------
+PipelineJob6
+To create maven pipeline job, make sure maven is installed, set its environment variable and set up global tool configuration
+
+pipeline {
+    agent any
+    environment {
+        PATH = "/opt/maven/bin:$PATH"
+    }
+    stages {
+        stage('git clone') {
+            steps {
+                git url: 'https://github.com/SaiDevOpsFaculty/testjava.git', branch: 'master'
+            }
+        }
+        stage('build') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+    }
+}
